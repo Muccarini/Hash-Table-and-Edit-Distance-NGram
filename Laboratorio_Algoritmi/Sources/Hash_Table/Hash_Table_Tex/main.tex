@@ -1,0 +1,52 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usepackage{import}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+\usepackage{pgfplots}
+
+\title{Hash Table}
+\author{Pandolfini Luca}
+\date{September 2020}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduzione}
+In  questa  relazione  andrò  a  studiare il comportamento delle tabelle hash al crescere del fattore di caricamento.
+\begin{equation}
+    \alpha=n/m.
+\end{equation}
+Dove n rappresenta il numero di valori inseriti, e m il numero delle chiavi a cui associarli.
+
+\section{Struttura}
+Ho implementato la tabella hash con gestione delle collisioni basate su concatenamento e su indirizzamento aperto. La funzione hash, ad ispezione lineare, è calcolata col metodo delle divisioni.
+
+\section{Test}
+I test che andrò ad eseguire non saranno altro che degli inserimenti variabili in tabella, registrando il numero di collisioni effettutate in funzione del fattore di caricamento, sia in indirizzamento aperto (plot rosso), sia con concatenamento (plot: blue), mi aspetto che la tabella ad indirizzamento aperto all' aumentare del fattore di carico aumenti maggiormente il numero di collisioni rispetto a quella con concatenamento, in quanto per gestire le collisioni riempie le chiavi disponibili piu' velocemente, aumentando la probabilità di ulteriori collisioni.
+
+\newpage
+
+\begin{figure}[]
+    \centering
+    \begin{tikzpicture}[scale=1]
+    
+    \begin{axis}[title={\textcolor{red}{open} | \textcolor{blue}{chain}},name = plot,
+    xmin= 0, xmax= 1,
+    ymin= 0, ymax= 6000,
+    xlabel={fattore di carico},ylabel={numero di collisioni}]
+    
+    \addplot[red,mark=x] table{./graph/10000Open.txt};
+    \addplot[blue,mark=x] table{./graph/10000Chain.txt};
+    
+    \end{axis}
+    
+    \end{tikzpicture}
+    \caption{10000 keys, riempite con valori random}
+\end{figure}
+
+\section{Conclusioni}
+Come atteso, la curva delle collisioni col metodo di concatenamento è piu bassa rispetto a quella dell' indirizzamento aperto.\\ La differenza tra le due gestioni di collisioni è: per fattori di carico basso è migliore quella ad indirizzamento aperto in quanto effettua ricerche più veloci perchè i valori sono posizionati in memoria in modo contiguo, mentre col concatenamento la ricerca viene effettuata su liste con puntatori, mentre per fattori di carico maggiori di 1 per la open-address serve un re-hashing mentre col concatenamento si può mantenere lo stesso numero di chiavi.
+\end{document}
